@@ -1,0 +1,27 @@
+# NGINX SERVER EXAMPLE (this example is django)
+#
+# belongs in /etc/nginx/sites-available/service
+# 
+# make sure to symlink to /etc/nginx/sites-enabled/service using this command:
+#   sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled 
+#
+# to test nginx config:
+#   sudo nginx -t
+#
+# to restart nginx:
+#   sudo service nginx restart
+
+server {
+    listen 80;
+    server_name 52.2.237.235;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/littlelogSMS;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/littlelogSMS/littlelogSMS.sock;
+    }
+}

@@ -1,0 +1,17 @@
+# EXAMPLE .conf file for upstart & gunicorn 
+#
+# SAVE IN /etc/init/<service_name>.conf
+
+description "Gunicorn application server handling littlelogsms"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+setuid ubuntu
+setgid www-data
+chdir /home/ubuntu/littlelogSMS
+
+script
+	exec ../dev/lsms/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/littlelogSMS/littlelogSMS.sock littlelogsms.wsgi:application
+end script
